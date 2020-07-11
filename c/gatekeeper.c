@@ -236,7 +236,7 @@ END:
     return err;
 }
 
-int handle_tag(MifareTag tag, bool *tag_valid, void* publisher)
+int handle_tag(FreefareTag tag, bool *tag_valid, void* publisher)
 {
     const uint8_t errlimit = 3;
     int err = 0;
@@ -432,7 +432,7 @@ pthread_mutex_t tag_processing = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t tag_done = PTHREAD_COND_INITIALIZER;
 
 struct thread_data {
-   MifareTag tag;
+   FreefareTag tag;
    bool tag_valid;
    int  err;
    void* zmq_socket;
@@ -532,7 +532,7 @@ int main(int argc, char *argv[])
 
 
     // Mainloop
-    MifareTag *tags = NULL;
+    FreefareTag *tags = NULL;
     while(!s_interrupted)
     {
         tags = freefare_get_tags(device);
@@ -558,7 +558,7 @@ int main(int argc, char *argv[])
         for (int i = 0; (!error) && tags[i]; ++i)
         {
             char *tag_uid_str = freefare_get_tag_uid(tags[i]);
-            if (DESFIRE != freefare_get_tag_type(tags[i]))
+            if (MIFARE_DESFIRE != freefare_get_tag_type(tags[i]))
             {
                 // Skip non DESFire tags
                 log_debug("Skipping non DESFire tag %s", tag_uid_str);
@@ -577,7 +577,7 @@ int main(int argc, char *argv[])
         
             /* pthread cond_timedwait expects an absolute time to wait until */
             clock_gettime(CLOCK_REALTIME, &abs_time);
-            abs_time.tv_sec += 1;
+            abs_time.tv_sec += 5;
         
             // Use this struct to pass data between thread and main
             struct thread_data tagdata;

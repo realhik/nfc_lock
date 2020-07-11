@@ -1,5 +1,4 @@
 #include <zmq.h>
-#include <zmq_utils.h>
 #include <string.h> // memcpy
 #include <stdlib.h> //realloc
 #include <stdio.h>
@@ -51,7 +50,7 @@ int main(int argc, char *argv[])
     }
     memcpy(zmq_msg_data(&request), argv[2], uidlen);
     printf("Sending request\n");
-    err = zmq_send(requester, &request, 0);
+    err = zmq_sendmsg(requester, &request, 0);
     if (err != 0)
     {
         printf("ERROR: zmq_send failed with %s\n", zmq_strerror(zmq_errno()));
@@ -71,7 +70,7 @@ int main(int argc, char *argv[])
             printf("ERROR: zmq_msg_init failed with %s\n", zmq_strerror(zmq_errno()));
             goto END;
         }
-        err = zmq_recv(requester, &message, 0);
+        err = zmq_recvmsg(requester, &message, 0);
         if (err != 0)
         {
             zmq_msg_close (&message);

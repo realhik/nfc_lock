@@ -36,7 +36,7 @@ static void s_catch_signals (void)
     sigaction (SIGTERM, &action, NULL);
 }
 
-int handle_tag(MifareTag tag, bool *tag_valid)
+int handle_tag(FreefareTag tag, bool *tag_valid)
 {
     const uint8_t errlimit = 3;
     int err = 0;
@@ -207,7 +207,7 @@ pthread_mutex_t tag_processing = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t tag_done = PTHREAD_COND_INITIALIZER;
 
 struct thread_data {
-   MifareTag tag;
+   FreefareTag tag;
    bool tag_valid;
    int  err;
 };
@@ -288,7 +288,7 @@ int main(int argc, char *argv[])
     s_catch_signals();
 
     // Mainloop
-    MifareTag *tags = NULL;
+    FreefareTag *tags = NULL;
     while(!s_interrupted)
     {
         tags = freefare_get_tags(device);
@@ -313,7 +313,7 @@ int main(int argc, char *argv[])
         for (int i = 0; (!error) && tags[i]; ++i)
         {
             char *tag_uid_str = freefare_get_tag_uid(tags[i]);
-            if (DESFIRE != freefare_get_tag_type(tags[i]))
+            if (MIFARE_DESFIRE != freefare_get_tag_type(tags[i]))
             {
                 // Skip non DESFire tags
                 printf("Skipping non DESFire tag %s\n", tag_uid_str);

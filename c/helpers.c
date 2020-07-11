@@ -29,7 +29,7 @@ uint16_t nfclock_fileaccessrights(uint8_t readkey, uint8_t writekey, uint8_t rwk
     return MDAR(readkey, writekey, rwkey, aclkey);
 }
 
-int nfclock_write_uint32(MifareTag tag, uint8_t fileid, uint32_t data)
+int nfclock_write_uint32(FreefareTag tag, uint8_t fileid, uint32_t data)
 {
     uint8_t databytes[4];
     size_t wrote;
@@ -48,7 +48,7 @@ int nfclock_write_uint32(MifareTag tag, uint8_t fileid, uint32_t data)
     return 0;
 }
 
-int nfclock_read_uint32(MifareTag tag, uint8_t fileid, uint32_t *target)
+int nfclock_read_uint32(FreefareTag tag, uint8_t fileid, uint32_t *target)
 {
     uint8_t databytes[4];
     size_t read;

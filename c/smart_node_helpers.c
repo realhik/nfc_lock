@@ -1,7 +1,7 @@
 #include "smart_node_helpers.h"
 #include "log.h"
 
-int nfclock_overwrite_acl(MifareTag tag, char *realuid_str, uint32_t newacl)
+int nfclock_overwrite_acl(FreefareTag tag, char *realuid_str, uint32_t newacl)
 {
     uint8_t diversified_key_data[16];
     MifareDESFireKey key;
